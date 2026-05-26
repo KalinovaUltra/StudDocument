@@ -1,0 +1,72 @@
+{% extends 'studdoc/base.html' %}
+{% load static %}
+{% block title %}Главная - Система документооборота{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Создание новой заявки</h2>
+    
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    {% if user.is_authenticated %}
+        <form method="post" enctype="multipart/form-data" id="requestForm">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="category">Тип документа:</label>
+                <select name="category" id="category" class="form-control" required>
+                    <option value="">Выберите тип</option>
+                    <!-- <option value="material">Материальная помощь</option>
+                    <option value="profkom">Заявление в профком</option>
+                    <option value="certificate">Справка об обучении</option>
+                    <option value="academic_leave">Академический отпуск</option>-->
+                </select>
+            </div>
+
+            <div class="preview-container" id="previewContainer" style="display: none;">
+                <h3>Предварительный просмотр документа</h3>
+                <div id="live-preview" class="document-preview"></div>
+            </div>
+
+
+            <div id="templateFields">
+                <!-- Для динамической загрузки полей шаблона -->
+            </div>
+            
+            <div class="form-group">
+                <label for="comment">Комментарий:</label>
+                <textarea name="comment" id="comment" class="form-control" rows="4"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="attachments">Прикрепить файлы:</label>
+                <input type="file" name="attachments" id="attachments" class="form-control" multiple>
+            </div>
+            
+            <button type="submit" class="btn btn-submit">Отправить заявку</button>
+        </form>
+    {% else %}
+        <div class="alert alert-warning">
+            <p>Для создания заявки необходимо <a href="{% url 'login' %}">войти в систему</a>.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module">
+    import { initDynamicForm } from "{% static 'studdoc/js/dynamic-form.js' %}";
+    import { initFormSubmit } from "{% static 'studdoc/js/form-handlers.js' %}";
+    
+    if (document.getElementById('requestForm')) {
+        initDynamicForm();
+        initFormSubmit();
+    }
+</script>
+{% endblock %}

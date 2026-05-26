@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Система документооборота для студентов{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'studdoc/css/style.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1><a href="{% url 'index' %}" class="nav-link">Система документооборота для студентов</a></h1>
+            <nav class="nav">
+                {% if user.is_authenticated %}
+                <!-- <span class="user-greeting">Привет, {{ user.get_full_name|default:user.username }}!</span>-->
+                <a href="{% url 'profile' %}" class="nav-link">Личный кабинет</a>
+                {% if user.profile.role == 'admin' %}
+                <a href="/admin/" class="nav-link">Админ-панель</a>
+                {% endif %}
+                {% if user.profile.role == 'staff' or user.profile.role == 'admin' %}
+                <a href="{% url 'deanery_panel' %}" class="nav-link">Панель деканата</a>
+                {% endif %}
+                {% if user.profile.role == 'profcom' or user.profile.role == 'admin' %}
+                <a href="{% url 'profcom_panel' %}" class="nav-link">Панель профкома</a>
+                {% endif %}
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link logout-btn">Выйти</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="nav-link">Войти</a>
+    {% endif %}
+</nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <!-- Глобальные данные для JS -->
+<script>
+    window.DJANGO_DATA = {
+    csrfToken: "{{ csrf_token }}",
+    isAuthenticated: {{ user.is_authenticated|yesno:'true,false' }},
+    userId: {{ user.id|default:'null' }},
+    userData: {
+        name: "{{ user.profile.get_full_name|default:user.username|escapejs }}",
+        group: "{{ user.profile.group|default:''|escapejs }}",
+        faculty: "{{ user.profile.faculty|default:''|escapejs }}"
+    }
+};
+</script>
+
+    <!-- Точка входа для JS -->
+    <script src="{% static 'studdoc/js/main.js' %}" type="module"></script>
+
+    <!-- Блок для дополнительных скриптов на конкретной странице -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

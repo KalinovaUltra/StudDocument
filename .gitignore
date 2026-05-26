@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Django
+*.log
+*.pot
+db.sqlite3
+media/
+staticfiles/
+.DS_Store
+
+# Virtual environment
+venv/
+env/
+docvenv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Environment variables
+.env
+*.env
+
+# Secret keys
+config.py
+local_settings.py

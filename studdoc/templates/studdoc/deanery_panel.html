@@ -1,0 +1,41 @@
+{% extends 'studdoc/base.html' %}
+{% load static %}
+
+{% block title %}Панель деканата{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="user-info">
+        <h3>Панель деканата</h3>
+        <p>Управление заявками всех студентов</p>
+    </div>
+
+    <div class="documents-section">
+        <div class="filters" style="margin-bottom: 20px; display: flex; gap: 10px;">
+            <input type="text" id="searchInput" placeholder="Поиск по студенту..." class="form-control" style="flex: 1;">
+            <select id="statusFilter" class="form-control" style="width: 220px;">
+                <option value="all">Все статусы</option>
+                <option value="pending">На рассмотрении в деканате</option>
+                <option value="in_profcom">На рассмотрении в профкоме</option>
+                <option value="profcom_approved">Одобрено профкомом</option>
+                <option value="profcom_rejected">Отклонено профкомом</option>
+                <option value="approved">Одобрено деканатом</option>
+                <option value="rejected">Отклонено деканатом</option>
+            </select>
+        </div>
+
+        <div class="documents-list" id="documentsList">
+            <div id="requestsContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.DEANERY_DATA = {{ requests_json|safe }};
+</script>
+<script type="module" src="{% static 'studdoc/js/deanery.js' %}"></script>
+<script type="module">
+    import { initDeanery } from "{% static 'studdoc/js/deanery.js' %}";
+    initDeanery();
+</script>
+{% endblock %}

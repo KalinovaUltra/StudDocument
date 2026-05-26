@@ -1,0 +1,235 @@
+/* Кастомизация админ-панели Django */
+
+#header {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+#header a:link,
+#header a:visited,
+#branding h1,
+#branding h1 a:link,
+#branding h1 a:visited,
+#user-tools a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+#header a:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    text-decoration: none !important;
+}
+
+#branding h1, #branding h1 a:link, #branding h1 a:visited {
+    color: white !important;
+}
+
+#user-tools a {
+    color: white !important;
+}
+
+
+body, .container, .main, .content,
+.module p, .module ul, .module li,
+#content-main, #content-related {
+    color: #212529 !important;
+}
+
+
+a:link, a:visited {
+    color: #212529 !important;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #007bff !important;
+    text-decoration: underline;
+}
+
+
+.module h2, .module caption, .inline-group h2 {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background-color: #7777ff !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    line-height: normal !important;
+}
+
+
+.object-tools .addlink {
+    background-color: #7777ff !important;
+    color: white !important;
+    border-radius: 4px !important;
+    padding: 6px 16px 6px 32px !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16px" height="16px"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: 8px center !important;
+    background-size: 16px !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    line-height: 1.4 !important;
+}
+
+
+.changelist-actions input[type="submit"],
+.changelist-actions .button {
+    background-color: #7777ff !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    line-height: normal !important;
+    cursor: pointer !important;
+    margin-left: 8px !important;
+}
+
+.changelist-actions input[type="submit"]:hover,
+.changelist-actions .button:hover {
+    background-color: #5a5ad3 !important;
+}
+
+#changelist-form {
+    overflow: visible !important;
+}
+
+#changelist-form .changelist-actions {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.changelist-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover,
+.object-tools .addlink:hover {
+    background-color: #5a5ad3 !important;
+    color: white !important;
+}
+
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background-color: #28a745 !important;
+}
+
+.button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover {
+    background-color: #218838 !important;
+}
+
+
+select, textarea, input[type=text], input[type=password], input[type=email], input[type=url], input[type=number] {
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    color: #212529 !important;
+}
+
+select:focus, textarea:focus, input:focus {
+    border-color: #7777ff !important;
+    outline: none !important;
+}
+
+
+div.breadcrumbs {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+div.breadcrumbs a {
+    color: #007bff !important;
+}
+
+
+.deletelink {
+    color: #dc3545 !important;
+}
+
+
+.results table thead th {
+    background-color: #f8f9fa !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+    color: #212529 !important;
+}
+
+
+#footer {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    border-top: 1px solid #e0e0e0 !important;
+}
+
+
+#changelist .actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+#changelist .actions select,
+#changelist .actions input[type="submit"] {
+    margin: 0 !important;
+    vertical-align: middle !important;
+}
+
+
+#changelist-form .changelist-actions {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.actions .button,
+.actions input[type="submit"] {
+    padding: 4px 10px !important;
+    min-height: 28px !important;
+    line-height: 1.2 !important;
+}
+
+/*   выравнивания блоков  */
+
+#container {
+    max-width: none !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+
+.dashboard #content {
+    width: auto !important;
+    float: none !important;
+}
+
+.dashboard #content-main {
+    width: 60% !important;
+    float: left !important;
+}
+
+.dashboard #content-related {
+    width: 35% !important;
+    float: right !important;
+    margin-right: 0 !important;
+}
+
+
+#content-main, #content-related {
+    box-sizing: border-box;
+}

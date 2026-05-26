@@ -1,0 +1,38 @@
+{% extends 'studdoc/base.html' %}
+{% load static %}
+
+{% block title %}Панель профкома{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="user-info">
+        <h3>Панель профкома</h3>
+        <p>Обработка заявок, переданных из деканата</p>
+    </div>
+
+    <div class="documents-section">
+        <div class="filters" style="margin-bottom: 20px; display: flex; gap: 10px;">
+            <input type="text" id="searchInput" placeholder="Поиск по студенту..." class="form-control" style="flex: 1;">
+            <select id="statusFilter" class="form-control" style="width: 200px;">
+                <option value="all">Все статусы</option>
+                <option value="in_profcom">На рассмотрении в профкоме</option>
+                <option value="profcom_approved">Одобрено профкомом</option>
+                <option value="profcom_rejected">Отклонено профкомом</option>
+            </select>
+        </div>
+
+        <div class="documents-list" id="documentsList">
+            <div id="requestsContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.PROFCOM_DATA = {{ requests_json|safe }};
+</script>
+<script type="module" src="{% static 'studdoc/js/profcom.js' %}"></script>
+<script type="module">
+    import { initProfcom } from "{% static 'studdoc/js/profcom.js' %}";
+    initProfcom();
+</script>
+{% endblock %}

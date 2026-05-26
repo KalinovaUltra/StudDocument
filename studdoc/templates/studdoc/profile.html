@@ -1,0 +1,121 @@
+{% extends 'studdoc/base.html' %}
+{% load static %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="user-info">
+    <!-- Режим просмотра -->
+    <div class="user-details" id="viewMode">
+    <h3>{{ user.profile.get_full_name }}</h3>
+    <p>{{ user.profile.group|default:"Группа не указана" }}, {{ user.profile.faculty|default:"Факультет не указан" }}</p>
+    <p>Email: {{ user.email }}</p>
+    <button type="button" class="btn btn-edit" id="editProfileBtn">Редактировать</button>
+</div>
+
+<!-- Форма редактирования -->
+<div class="edit-form" id="editForm" style="display: none;">
+    <div class="form-group">
+        <label for="edit-username">Логин:</label>
+        <input type="text" id="edit-username" class="form-control" value="{{ user.username }}">
+    </div>
+    <div class="form-group">
+        <label for="edit-email">Email:</label>
+        <input type="email" id="edit-email" class="form-control" value="{{ user.email|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="edit-last_name">Фамилия:</label>
+        <input type="text" id="edit-last_name" class="form-control" value="{{ user.profile.last_name|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="edit-first_name">Имя:</label>
+        <input type="text" id="edit-first_name" class="form-control" value="{{ user.profile.first_name|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="edit-patronymic">Отчество:</label>
+        <input type="text" id="edit-patronymic" class="form-control" value="{{ user.profile.patronymic|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="edit-group">Группа:</label>
+        <input type="text" id="edit-group" class="form-control" value="{{ user.profile.group|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="edit-faculty">Факультет:</label>
+        <input type="text" id="edit-faculty" class="form-control" value="{{ user.profile.faculty|default:'' }}">
+    </div>
+    <div class="form-group">
+        <label for="edit-password">Новый пароль (оставьте пустым, если не менять):</label>
+        <input type="password" id="edit-password" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="edit-confirm_password">Подтверждение пароля:</label>
+        <input type="password" id="edit-confirm_password" class="form-control">
+    </div>
+    <div class="profile-actions">
+        <button type="button" class="btn btn-save" id="saveProfileBtn">Сохранить</button>
+        <button type="button" class="btn btn-cancel" id="cancelEditBtn">Отмена</button>
+    </div>
+</div>
+
+    <div class="documents-section">
+        <h3 class="section-title">Мои заявки</h3>
+        <div class="documents-list" id="documentsList">
+            {% if requests_json %}
+                <script>
+                    // Просто выводим данные в консоль для проверки
+                    console.log('REQUESTS_DATA:', {{ requests_json|safe }});
+                </script>
+
+            {% endif %}
+
+            <!-- Заявки отображены через JavaScript -->
+            <div id="requestsContainer"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Передаём данные в глобальную переменную для main.js
+    window.REQUESTS_DATA = {{ requests_json|safe }};
+
+    // Создаём элементы заявок
+    const container = document.getElementById('requestsContainer');
+    if (window.REQUESTS_DATA.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>У вас пока нет заявок</p><a href="/" class="btn btn-submit">Создать заявку</a></div>';
+    } else {
+        window.REQUESTS_DATA.forEach(req => {
+            const item = document.createElement('div');
+            item.className = 'document-item';
+            item.setAttribute('data-id', req.id);
+            const attachmentsLink = req.has_files ? `<a href="/download-attachments/${req.id}/" class="btn-attachments" target="_blank">Скачать приложения</a>` : '';
+
+            item.innerHTML = `
+                <div class="document-info">
+                    <div class="document-title">${escapeHtml(req.title)}</div>
+                    <div class="document-meta">
+                        <span>Категория: ${escapeHtml(req.category)}</span><br>
+                        <span>Комментарий: ${escapeHtml(req.comment || 'нет комментария')}</span><br>
+                        <span>Дата: ${escapeHtml(req.date)}</span>
+                    </div>
+                </div>
+                <div class="document-actions">
+                    <a href="/download-request/${req.id}/" class="btn-download">Скачать doc</a>
+                    ${attachmentsLink}
+                </div>
+                <div class="document-status ${req.statusClass}">Статус: ${escapeHtml(req.status)}</div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
+{% endblock %}
