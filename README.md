@@ -10,6 +10,7 @@
 - **Frontend:** HTML, CSS, JavaScript 
 - **Генерация документов:** docxtpl, python-docx 
 - **Дизайн прототипов:** Figma
+https://www.figma.com/design/y63zfHDG978S1IRMTv3Brn/%D0%94%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%BE%D0%BE%D0%B1%D0%BE%D1%80%D0%BE%D1%82?node-id=0-1&t=NLt9kN1A4FlBFV8z-1
 
 <br>
 
