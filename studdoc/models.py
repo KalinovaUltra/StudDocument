@@ -28,12 +28,14 @@ class UserProfile(models.Model): #РОЛИ
     def __str__(self):
         return f"{self.get_full_name()} ({self.get_role_display()})"
 
-class DocumentTemplate(models.Model): #КАТЕГОРИИ ДОКУМЕНТОВ
+class DocumentTemplate(models.Model): #КАТЕГОРИИ ДОКУМЕНТОВ ДЛЯ ШАБЛОНОВ
     CATEGORY_CHOICES = [
         ('material-help', 'Материальная помощь'),
-        ('profcom', 'Профком'),
-        ('academic', 'Академические вопросы'),
-        ('social', 'Социальные льготы'),
+        ('profcom', 'Заявление о вступлении в Профком'),
+        ('academic', 'Академический отпуск'),
+        ('social', 'Социальные льготы (ПГАС)'),
+        ('dismissal', 'Отчисление по собственному желанию'),
+        ('personal_data', 'Согласие на обработку персональных данных'),
     ]
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
@@ -47,9 +49,11 @@ class DocumentTemplate(models.Model): #КАТЕГОРИИ ДОКУМЕНТОВ
 class Request(models.Model):
     CATEGORY_CHOICES = [
         ('material-help', 'Материальная помощь'),
-        ('profcom', 'Профком'),
-        ('academic', 'Академические вопросы'),
-        ('social', 'Социальные льготы'),
+        ('profcom', 'Заявление о вступлении в Профком'),
+        ('academic', 'Академический отпуск'),
+        ('social', 'Социальные льготы (ПГАС)'),
+        ('dismissal', 'Отчисление по собственному желанию'),
+        ('personal_data', 'Согласие на обработку персональных данных'),
     ]
 
     STATUS_CHOICES = [
@@ -62,7 +66,7 @@ class Request(models.Model):
     ]
 
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests')
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)  # ✅ ДОБАВЛЕНЫ choices
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     comment = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     template = models.ForeignKey(DocumentTemplate, on_delete=models.SET_NULL, null=True, blank=True)

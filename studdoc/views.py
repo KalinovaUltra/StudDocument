@@ -44,7 +44,7 @@ def profile(request):
         requests_data.append({
             'id': req.id,
             'title': req.get_category_display(),
-            'category': req.category,
+            'category': req.get_category_display(),
             'comment': req.comment or '',
             'date': req.created_at.strftime('%d.%m.%Y %H:%M'),
             'status': req.get_status_display(),

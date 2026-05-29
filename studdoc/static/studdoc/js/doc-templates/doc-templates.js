@@ -6,7 +6,6 @@ function getTodayDate() {
     return today.toLocaleDateString('ru-RU');
 }
 
-
 function escapeHtml(text) {
     if (!text) return '';
     const div = document.createElement('div');
@@ -14,7 +13,7 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Базовый шаблон с данными студента (для формы)
+// Базовый шаблон с данными студента (для простых форм)
 function getStudentDataSection() {
     return `
         <div class="student-data-section">
@@ -68,23 +67,58 @@ function getPreviewHtml(category, values) {
         case 'academic':
             return `
                 <div class="preview-document">
-                    <h3>Академическое заявление</h3>
+                    <h3>Заявление на академический отпуск</h3>
                     <p><strong>ФИО:</strong> ${escape(values.name)}</p>
                     <p><strong>Группа:</strong> ${escape(values.group)}</p>
-                    <p><strong>Факультет:</strong> ${escape(values.faculty)}</p>
+                    <p><strong>Институт/кафедра:</strong> ${escape(values.department)}</p>
+                    <p><strong>Курс:</strong> ${escape(values.course)}</p>
+                    <p><strong>Форма обучения:</strong> ${escape(values.education_form)}</p>
+                    <p><strong>Телефон:</strong> ${escape(values.phone)}</p>
+                    <p><strong>Дата начала отпуска:</strong> ${escape(values.start_date)}</p>
+                    <p><strong>Дата окончания:</strong> ${escape(values.end_date)}</p>
+                    <p><strong>Причина:</strong> ${escape(values.reason)}</p>
+                    <p><strong>Дата подачи:</strong> ${escape(values.date)}</p>
+                </div>
+            `;
+        case 'dismissal':
+            return `
+                <div class="preview-document">
+                    <h3>Заявление об отчислении по собственному желанию</h3>
+                    <p><strong>ФИО:</strong> ${escape(values.name)}</p>
+                    <p><strong>Группа:</strong> ${escape(values.group)}</p>
+                    <p><strong>Институт/кафедра:</strong> ${escape(values.department)}</p>
+                    <p><strong>Курс:</strong> ${escape(values.course)}</p>
+                    <p><strong>Форма обучения:</strong> ${escape(values.education_form)}</p>
+                    <p><strong>Телефон:</strong> ${escape(values.phone)}</p>
+                    <p><strong>Дата отчисления:</strong> ${escape(values.dismissal_date)}</p>
+                    <p><strong>Дата подачи:</strong> ${escape(values.date)}</p>
+                </div>
+            `;
+        case 'personal_data':
+            return `
+                <div class="preview-document">
+                    <h3>Согласие на обработку персональных данных</h3>
+                    <p><strong>ФИО:</strong> ${escape(values.name)}</p>
+                    <p><strong>Дата рождения:</strong> ${escape(values.birthday)}</p>
+                    <p><strong>Пол:</strong> ${escape(values.gender)}</p>
+                    <p><strong>Телефон:</strong> ${escape(values.telephone)}</p>
+                    <p><strong>Согласие на уведомления:</strong> ${escape(values.consent_notification)}</p>
                     <p><strong>Дата:</strong> ${escape(values.date)}</p>
-                    <p><strong>Суть вопроса:</strong> ${escape(values.issue)}</p>
                 </div>
             `;
         case 'social':
             return `
                 <div class="preview-document">
-                    <h3>Заявление на социальные льготы</h3>
+                    <h3>Заявление на ПГАС</h3>
                     <p><strong>ФИО:</strong> ${escape(values.name)}</p>
                     <p><strong>Группа:</strong> ${escape(values.group)}</p>
-                    <p><strong>Факультет:</strong> ${escape(values.faculty)}</p>
-                    <p><strong>Дата:</strong> ${escape(values.date)}</p>
-                    <p><strong>Причина обращения:</strong> ${escape(values['social-reason'])}</p>
+                    <p><strong>Форма обучения:</strong> ${escape(values.education_form)}</p>
+                    <p><strong>Телефон:</strong> ${escape(values.phone)}</p>
+                    <p><strong>Семестр:</strong> ${escape(values.semester)}</p>
+                    <p><strong>Учебный год:</strong> ${escape(values.academic_year)}</p>
+                    <p><strong>Сфера достижений:</strong> ${escape(values.achievement_area)}</p>
+                    <p><strong>Перечень документов:</strong> ${escape(values.documents_list)}</p>
+                    <p><strong>Дата подачи:</strong> ${escape(values.date)}</p>
                 </div>
             `;
         default:
@@ -93,7 +127,7 @@ function getPreviewHtml(category, values) {
 }
 
 export const DocTemplates = {
-'material-help': `
+    'material-help': `
 <div class="template-content">
     <h3>Заявление на материальную помощь</h3>
     <div class="student-data-section">
@@ -191,46 +225,208 @@ export const DocTemplates = {
     'profcom': `
         <div class="template-content">
             <h3>Заявление о вступлении в профсоюз</h3>
-            ${getStudentDataSection()}
-            <div class="document-text-section">
-                <h4>Текст заявления:</h4>
+            <div class="student-data-section">
+                <h4>Данные студента:</h4>
                 <div class="template-field">
-                    <label>Текст заявления:</label>
-                    <textarea class="template-textarea" id="purpose" name="purpose" style="height: 180px;" placeholder="Введите текст заявления...">Настоящим прошу принять меня в члены Профсоюза работников государственных учреждений и общественного обслуживания Российской Федерации.
-
-Обязуюсь:
-- соблюдать Устав Профсоюза;
-- выполнять решения выборных органов Профсоюза;
-- регулярно уплачивать членские взносы;
-- принимать активное участие в деятельности Профсоюзной организации.
-
-С Положением о персональных данных ознакомлен(а) и согласен(на).</textarea>
+                    <label>ФИО:</label>
+                    <input type="text" class="template-input student-data" id="name" name="name" placeholder="Ваше ФИО" required>
+                </div>
+                <div class="template-field">
+                    <label>Дата подачи:</label>
+                    <input type="text" class="template-input" id="date" name="date" value="${getTodayDate()}" readonly>
                 </div>
             </div>
         </div>
     `,
     'academic': `
         <div class="template-content">
-            <h3>Академическое заявление</h3>
-            ${getStudentDataSection()}
+            <h3>Заявление на академический отпуск</h3>
+            <div class="student-data-section">
+                <h4>Данные студента:</h4>
+                <div class="template-field">
+                    <label>ФИО:</label>
+                    <input type="text" class="template-input student-data" id="name" name="name" placeholder="Ваше ФИО" required>
+                </div>
+                <div class="template-field">
+                    <label>Институт / кафедра:</label>
+                    <input type="text" class="template-input" id="department" name="department" placeholder="Название института или кафедры" required>
+                </div>
+                <div class="template-field">
+                    <label>Курс:</label>
+                    <input type="number" class="template-input" id="course" name="course" placeholder="Номер курса" min="1" max="6" required>
+                </div>
+                <div class="template-field">
+                    <label>Группа:</label>
+                    <input type="text" class="template-input student-data" id="group" name="group" placeholder="Группа" required>
+                </div>
+                <div class="template-field">
+                    <label>Форма обучения:</label>
+                    <select class="template-input" id="education_form" name="education_form" required>
+                        <option value="">Выберите форму</option>
+                        <option value="бюджетная">Бюджетная</option>
+                        <option value="контрактная">Контрактная</option>
+                    </select>
+                </div>
+                <div class="template-field">
+                    <label>Контактный телефон:</label>
+                    <input type="tel" class="template-input" id="phone" name="phone" placeholder="11 цифр" pattern="\\d{11}" maxlength="11" required>
+                </div>
+                <div class="template-field">
+                    <label>Дата начала отпуска:</label>
+                    <input type="date" class="template-input" id="start_date" name="start_date" required>
+                </div>
+                <div class="template-field">
+                    <label>Дата окончания отпуска:</label>
+                    <input type="date" class="template-input" id="end_date" name="end_date" required>
+                </div>
+                <div class="template-field">
+                    <label>Дата подачи:</label>
+                    <input type="text" class="template-input" id="date" name="date" value="${getTodayDate()}" readonly>
+                </div>
+            </div>
             <div class="document-text-section">
                 <h4>Текст заявления:</h4>
                 <div class="template-field">
-                    <label>Суть вопроса:</label>
-                    <textarea class="template-textarea" id="issue" name="issue" placeholder="Опишите суть вопроса...">Прошу рассмотреть вопрос об академическом отпуске/пересдаче экзамена/другой академический вопрос.</textarea>
+                    <label>Причина:</label>
+                    <textarea class="template-textarea" id="reason" name="reason" placeholder="Укажите причину" rows="4" required></textarea>
+                </div>
+            </div>
+        </div>
+    `,
+    'dismissal': `
+        <div class="template-content">
+            <h3>Заявление об отчислении по собственному желанию</h3>
+            <div class="student-data-section">
+                <h4>Данные студента:</h4>
+                <div class="template-field">
+                    <label>ФИО:</label>
+                    <input type="text" class="template-input student-data" id="name" name="name" placeholder="Ваше ФИО" required>
+                </div>
+                <div class="template-field">
+                    <label>Институт / кафедра:</label>
+                    <input type="text" class="template-input" id="department" name="department" placeholder="Название института или кафедры" required>
+                </div>
+                <div class="template-field">
+                    <label>Курс:</label>
+                    <input type="number" class="template-input" id="course" name="course" placeholder="Номер курса" min="1" max="6" required>
+                </div>
+                <div class="template-field">
+                    <label>Группа:</label>
+                    <input type="text" class="template-input student-data" id="group" name="group" placeholder="Группа" required>
+                </div>
+                <div class="template-field">
+                    <label>Форма обучения:</label>
+                    <select class="template-input" id="education_form" name="education_form" required>
+                        <option value="">Выберите форму</option>
+                        <option value="бюджетная">Бюджетная</option>
+                        <option value="контрактная">Контрактная</option>
+                    </select>
+                </div>
+                <div class="template-field">
+                    <label>Контактный телефон:</label>
+                    <input type="tel" class="template-input" id="phone" name="phone" placeholder="11 цифр" pattern="\\d{11}" maxlength="11" required>
+                </div>
+                <div class="template-field">
+                    <label>Дата отчисления:</label>
+                    <input type="date" class="template-input" id="dismissal_date" name="dismissal_date" required>
+                </div>
+                <div class="template-field">
+                    <label>Дата подачи:</label>
+                    <input type="text" class="template-input" id="date" name="date" value="${getTodayDate()}" readonly>
+                </div>
+            </div>
+        </div>
+    `,
+    'personal_data': `
+        <div class="template-content">
+            <h3>Согласие на обработку персональных данных</h3>
+            <div class="student-data-section">
+                <h4>Данные студента:</h4>
+                <div class="template-field">
+                    <label>ФИО:</label>
+                    <input type="text" class="template-input student-data" id="name" name="name" placeholder="Ваше ФИО" required>
+                </div>
+                <div class="template-field">
+                    <label>Дата рождения:</label>
+                    <input type="date" class="template-input" id="birthday" name="birthday" required>
+                </div>
+                <div class="template-field">
+                    <label>Пол:</label>
+                    <select class="template-input" id="gender" name="gender" required>
+                        <option value="">Выберите</option>
+                        <option value="Мужской">Мужской</option>
+                        <option value="Женский">Женский</option>
+                    </select>
+                </div>
+                <div class="template-field">
+                    <label>Контактный телефон:</label>
+                    <input type="tel" class="template-input" id="telephone" name="telephone" placeholder="11 цифр" pattern="\\d{11}" maxlength="11" required>
+                </div>
+                <div class="template-field">
+                    <label>Согласие на уведомления (SMS/email):</label>
+                    <select class="template-input" id="consent_notification" name="consent_notification" required>
+                        <option value="даю согласие">Даю согласие</option>
+                        <option value="не даю согласие">Не даю согласие</option>
+                    </select>
+                </div>
+                <div class="template-field">
+                    <label>Дата подписания:</label>
+                    <input type="text" class="template-input" id="date" name="date" value="${getTodayDate()}" readonly>
                 </div>
             </div>
         </div>
     `,
     'social': `
         <div class="template-content">
-            <h3>Заявление на социальные льготы</h3>
-            ${getStudentDataSection()}
-            <div class="document-text-section">
-                <h4>Текст заявления:</h4>
+            <h3>Заявление на повышенную государственную академическую стипендию (ПГАС)</h3>
+            <div class="student-data-section">
+                <h4>Данные студента:</h4>
                 <div class="template-field">
-                    <label>Причина обращения:</label>
-                    <textarea class="template-textarea" id="social-reason" name="social-reason" placeholder="Опишите причину...">Прошу предоставить мне социальные льготы в соответствии с действующим законодательством.</textarea>
+                    <label>ФИО:</label>
+                    <input type="text" class="template-input student-data" id="name" name="name" placeholder="Ваше ФИО" required>
+                </div>
+                <div class="template-field">
+                    <label>Группа:</label>
+                    <input type="text" class="template-input student-data" id="group" name="group" placeholder="Группа" required>
+                </div>
+                <div class="template-field">
+                    <label>Форма обучения:</label>
+                    <select class="template-input" id="education_form" name="education_form" required>
+                        <option value="">Выберите форму</option>
+                        <option value="бюджетная">Бюджетная</option>
+                        <option value="контрактная">Контрактная</option>
+                    </select>
+                </div>
+                <div class="template-field">
+                    <label>Контактный телефон:</label>
+                    <input type="tel" class="template-input" id="phone" name="phone" placeholder="11 цифр" pattern="\\d{11}" maxlength="11" required>
+                </div>
+                <div class="template-field">
+                    <label>Семестр:</label>
+                    <input type="text" class="template-input" id="semester" name="semester" placeholder="например, 1" required>
+                </div>
+                <div class="template-field">
+                    <label>Учебный год:</label>
+                    <input type="text" class="template-input" id="academic_year" name="academic_year" placeholder="например, 2024-2025" required>
+                </div>
+                <div class="template-field">
+                    <label>Сфера достижений:</label>
+                    <select class="template-input" id="achievement_area" name="achievement_area" required>
+                        <option value="">Выберите</option>
+                        <option value="учебной">Учебная</option>
+                        <option value="научно-исследовательской">Научно-исследовательская</option>
+                        <option value="общественной">Общественная</option>
+                        <option value="культурно-творческой">Культурно-творческая</option>
+                        <option value="спортивной">Спортивная</option>
+                    </select>
+                </div>
+                <div class="template-field">
+                    <label>Перечень прилагаемых документов:</label>
+                    <textarea class="template-textarea" id="documents_list" name="documents_list" placeholder="Перечислите документы (каждый с новой строки)" rows="5" required></textarea>
+                </div>
+                <div class="template-field">
+                    <label>Дата подачи:</label>
+                    <input type="text" class="template-input" id="date" name="date" value="${getTodayDate()}" readonly>
                 </div>
             </div>
         </div>
@@ -257,6 +453,5 @@ export function fillTemplateWithUserData(templateHtml, userData) {
 
     return filledHtml;
 }
-
 
 export { getPreviewHtml };

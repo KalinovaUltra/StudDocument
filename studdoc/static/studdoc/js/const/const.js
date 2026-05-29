@@ -24,7 +24,9 @@ export const StatusClassMap = {
 
 export const Categories = [
   { value: 'material-help', text: 'Материальная помощь' },
-  { value: 'profcom', text: 'Профком' },
-  { value: 'academic', text: 'Академические вопросы' },
-  { value: 'social', text: 'Социальные льготы' }
+  { value: 'profcom', text: 'Заявление о вступлении в Профком' },
+  { value: 'academic', text: 'Академический отпуск' },
+  { value: 'social', text: 'Социальные льготы (ПГАС)' },
+  { value: 'dismissal', text: 'Отчисление по собственному желанию' },
+  { value: 'personal_data', text: 'Согласие на обработку персональных данных' },
 ];
